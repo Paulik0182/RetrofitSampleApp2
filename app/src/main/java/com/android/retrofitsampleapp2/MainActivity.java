@@ -11,6 +11,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private final Retrofit retrofit = new Retrofit.Builder()
             //это начало адреса которая будет подставлятся для открытия списка пользователя и их репозитория
             .baseUrl("https://api.github.com/")
+            .addConverterFactory(GsonConverterFactory.create())// это приобразователь объектов из одного типа в другой тип (здесь старонняя библиотека)
             .build();
 
     // создали gitHubApi для обращения к нему (create - творить). GitHubApi.class - тип данных который нужно создать
