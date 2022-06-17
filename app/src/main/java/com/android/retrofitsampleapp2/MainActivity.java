@@ -40,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
                     if (response.isSuccessful()) { //isSuccessful - это уже проверка кодов от 200 до 300
                         List<GitProjectEntity> projects = response.body(); // body - это тело запроса, это будет список репозиториев которые мы ищем. Здесь мы получаем список проектов
 
+                        //test
+                        assert projects != null;
+                        Toast.makeText(MainActivity.this, "Size" + projects.size(), Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(MainActivity.this, "Error code" + response.code(), Toast.LENGTH_LONG).show();
                     }
