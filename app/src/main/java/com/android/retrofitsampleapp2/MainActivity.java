@@ -40,24 +40,29 @@ public class MainActivity extends AppCompatActivity {
 
         showProgress(true);
 
+        loadProjects("borhammere");
+        
+    }
+
+    private void loadProjects(String userName) {
         //вызываем проект (репозиторий) конкретного пользователя. Вызов идет ассинхронно в том же потоке
         // (enqueue - ставить в очередь в () передаем Callback, execute - выполнять).
         // Callback состоит из двух методов: onResponse - получение ответа; onFailure - получение ошибки (нет сети ошибка сервера, DNS и т.д.).
-        gitHubApi.getProject("borhammere").enqueue(new Callback<List<GitProjectEntity>>() {
+        gitHubApi.getProject(userName).enqueue(new Callback<List<GitProjectEntity>>() {
 
             @Override
             public void onResponse(Call<List<GitProjectEntity>> call, Response<List<GitProjectEntity>> response) {
                 showProgress(false);
 //                if (response.code()==200){  //проверка кода, код 200 означает успех
-                    if (response.isSuccessful()) { //isSuccessful - это уже проверка кодов от 200 до 300
-                        List<GitProjectEntity> projects = response.body(); // body - это тело запроса, это будет список репозиториев которые мы ищем. Здесь мы получаем список проектов
+                if (response.isSuccessful()) { //isSuccessful - это уже проверка кодов от 200 до 300
+                    List<GitProjectEntity> projects = response.body(); // body - это тело запроса, это будет список репозиториев которые мы ищем. Здесь мы получаем список проектов
 
-                        //test
-                        assert projects != null;
-                        Toast.makeText(MainActivity.this, "Size" + projects.size(), Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(MainActivity.this, "Error code" + response.code(), Toast.LENGTH_LONG).show();
-                    }
+                    //test
+                    assert projects != null;
+                    Toast.makeText(MainActivity.this, "Size" + projects.size(), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Error code" + response.code(), Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
