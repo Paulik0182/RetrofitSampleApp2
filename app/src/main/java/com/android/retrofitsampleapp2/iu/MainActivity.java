@@ -61,12 +61,12 @@ public class MainActivity extends AppCompatActivity {
                 showProgress(false);
 //                if (response.code()==200){  //проверка кода, код 200 означает успех
                 if (response.isSuccessful()) { //isSuccessful - это уже проверка кодов от 200 до 300
-                    List<GitUserEntity> projects = response.body(); // body - это тело запроса, это будет список репозиториев которые мы ищем. Здесь мы получаем список проектов
-                    adapter.setData(projects);
+                    List<GitUserEntity> user = response.body(); // body - это тело запроса, это будет список репозиториев которые мы ищем. Здесь мы получаем список проектов
+                    adapter.setData(user);
 
                     //test
-                    assert projects != null;
-                    Toast.makeText(MainActivity.this, "Size" + projects.size(), Toast.LENGTH_LONG).show();
+                    assert user != null;
+                    Toast.makeText(MainActivity.this, "Size" + user.size(), Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(MainActivity.this, "Error code" + response.code(), Toast.LENGTH_LONG).show();
                 }
