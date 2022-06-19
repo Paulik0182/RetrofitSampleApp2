@@ -11,15 +11,15 @@ import com.android.retrofitsampleapp2.domain.GitUserEntity;
 
 public class GitUsersViewHolder extends RecyclerView.ViewHolder {
 
-    private final TextView titleTextView = itemView.findViewById(R.id.title_text_view);
-    private final TextView subtitleTextView = itemView.findViewById(R.id.subtitle_text_view);
+    private final TextView titleUserTextView = itemView.findViewById(R.id.title_user_text_view);
+    private final TextView subtitleUserTextView = itemView.findViewById(R.id.subtitle_user_text_view);
 
     public GitUsersViewHolder(@NonNull View itemView) {
         super(itemView);
     }
 
     public void bind(GitUserEntity gitUserEntity) {
-        titleTextView.setText(gitUserEntity.getLogin());
-        subtitleTextView.setText(gitUserEntity.getNodeId());
+        titleUserTextView.setText(gitUserEntity.getLogin());
+        subtitleUserTextView.setText(gitUserEntity.getNodeId());
     }
 }

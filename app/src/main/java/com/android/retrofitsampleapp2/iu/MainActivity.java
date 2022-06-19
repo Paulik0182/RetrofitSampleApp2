@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.retrofitsampleapp2.R;
 import com.android.retrofitsampleapp2.data.GitHubApi;
-import com.android.retrofitsampleapp2.domain.GitProjectEntity;
+import com.android.retrofitsampleapp2.domain.GitUserEntity;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
-    private GitProjectAdapter adapter = new GitProjectAdapter();// создали адаптер
+    private GitUsersAdapter adapter = new GitUsersAdapter();// создали адаптер Users
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,22 +46,22 @@ public class MainActivity extends AppCompatActivity {
 
         showProgress(true);
 
-        loadProjects("borhammere");
+        loadUsers();
 
     }
 
-    private void loadProjects(String userName) {
+    private void loadUsers() {
         //вызываем проект (репозиторий) конкретного пользователя. Вызов идет ассинхронно в том же потоке
         // (enqueue - ставить в очередь в () передаем Callback, execute - выполнять).
         // Callback состоит из двух методов: onResponse - получение ответа; onFailure - получение ошибки (нет сети ошибка сервера, DNS и т.д.).
-        gitHubApi.getProject(userName).enqueue(new Callback<List<GitProjectEntity>>() {
+        gitHubApi.getUsers().enqueue(new Callback<List<GitUserEntity>>() {
 
             @Override
-            public void onResponse(Call<List<GitProjectEntity>> call, Response<List<GitProjectEntity>> response) {
+            public void onResponse(Call<List<GitUserEntity>> call, Response<List<GitUserEntity>> response) {
                 showProgress(false);
 //                if (response.code()==200){  //проверка кода, код 200 означает успех
                 if (response.isSuccessful()) { //isSuccessful - это уже проверка кодов от 200 до 300
-                    List<GitProjectEntity> projects = response.body(); // body - это тело запроса, это будет список репозиториев которые мы ищем. Здесь мы получаем список проектов
+                    List<GitUserEntity> projects = response.body(); // body - это тело запроса, это будет список репозиториев которые мы ищем. Здесь мы получаем список проектов
                     adapter.setData(projects);
 
                     //test
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<GitProjectEntity>> call, Throwable t) {
+            public void onFailure(Call<List<GitUserEntity>> call, Throwable t) {
                 showProgress(false);
                 Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
             }
