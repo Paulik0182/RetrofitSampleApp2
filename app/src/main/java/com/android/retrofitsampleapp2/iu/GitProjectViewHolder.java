@@ -1,10 +1,13 @@
-package com.android.retrofitsampleapp2;
+package com.android.retrofitsampleapp2.iu;
 
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.retrofitsampleapp2.R;
+import com.android.retrofitsampleapp2.domain.GitProjectEntity;
 
 public class GitProjectViewHolder extends RecyclerView.ViewHolder {
 

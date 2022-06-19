@@ -1,4 +1,4 @@
-package com.android.retrofitsampleapp2;
+package com.android.retrofitsampleapp2.domain;
 
 public class GitProjectEntity {
 

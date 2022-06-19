@@ -1,10 +1,13 @@
-package com.android.retrofitsampleapp2;
+package com.android.retrofitsampleapp2.iu;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.retrofitsampleapp2.R;
+import com.android.retrofitsampleapp2.domain.GitProjectEntity;
 
 import java.util.List;
 
