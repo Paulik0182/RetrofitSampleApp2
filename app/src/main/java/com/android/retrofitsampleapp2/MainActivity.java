@@ -6,6 +6,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
+    private GitProjectAdapter adapter = new GitProjectAdapter();// создали адаптер
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         showProgress(true);
 
         loadProjects("borhammere");
-        
+
     }
 
     private void loadProjects(String userName) {
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 //                if (response.code()==200){  //проверка кода, код 200 означает успех
                 if (response.isSuccessful()) { //isSuccessful - это уже проверка кодов от 200 до 300
                     List<GitProjectEntity> projects = response.body(); // body - это тело запроса, это будет список репозиториев которые мы ищем. Здесь мы получаем список проектов
+                    adapter.setData(projects);
 
                     //test
                     assert projects != null;
@@ -76,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         progressBar = findViewById(R.id.progress_bar);
         recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
     }
 
     private void showProgress(boolean shouldShow) {
