@@ -23,7 +23,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class UsersActivity extends AppCompatActivity {
 
     private final OkHttpClient client = new OkHttpClient
             .Builder()// каждый раз вызова метода билдора будет возвращать его самого
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_users);
 
         initView();
 
@@ -78,16 +78,16 @@ public class MainActivity extends AppCompatActivity {
 
                     //test
                     assert user != null;
-                    Toast.makeText(MainActivity.this, "Size" + user.size(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(UsersActivity.this, "Size" + user.size(), Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(MainActivity.this, "Error code" + response.code(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(UsersActivity.this, "Error code" + response.code(), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<GitUserEntity>> call, Throwable t) {
                 showProgress(false);
-                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(UsersActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
