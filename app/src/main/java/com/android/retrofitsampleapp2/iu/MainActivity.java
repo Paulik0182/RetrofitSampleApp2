@@ -54,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
 
         showProgress(true);
 
+        adapter.setOnItemClickListener(this::openUserScreen);// ::это ссылка на один метод,
+        // а :: означает, что этот метод использовать как лямду чтобы передать его в адаптер
+        // и приобразовать его в OnItemClickListener (это синтаксический сахр)
+
         loadUsers();
 
     }
@@ -86,6 +90,12 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void openUserScreen(GitUserEntity user) {
+//        Intent intent = ProjectsActivity.getLaunchIntent(this, user.getLogin());
+//        startActivity(intent);
+        Toast.makeText(this, "Нажали " + user.getLogin(), Toast.LENGTH_SHORT).show();
     }
 
     private void initView() {
