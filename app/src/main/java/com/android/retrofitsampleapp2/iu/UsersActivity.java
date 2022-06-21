@@ -1,5 +1,6 @@
 package com.android.retrofitsampleapp2.iu;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -93,8 +94,8 @@ public class UsersActivity extends AppCompatActivity {
     }
 
     private void openUserScreen(GitUserEntity user) {
-//        Intent intent = ProjectsActivity.getLaunchIntent(this, user.getLogin());
-//        startActivity(intent);
+        Intent intent = ProjectsActivity.getLaunchIntent(this, user.getLogin());
+        startActivity(intent);
         Toast.makeText(this, "Нажали " + user.getLogin(), Toast.LENGTH_SHORT).show();
     }
 
