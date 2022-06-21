@@ -14,7 +14,9 @@ import com.android.retrofitsampleapp2.data.GitHubApi;
 import com.android.retrofitsampleapp2.domain.GitUserEntity;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,9 +25,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final OkHttpClient client = new OkHttpClient
+            .Builder()// каждый раз вызова метода билдора будет возвращать его самого
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .build();
+
     //создаем Retrofit
     private final Retrofit retrofit = new Retrofit.Builder()
             //это начало адреса которая будет подставлятся для открытия списка пользователя и их репозитория
+            .client(client)//сдесь можно передать например настройки
             .baseUrl("https://api.github.com/")
             .addConverterFactory(GsonConverterFactory.create())// это приобразователь объектов из одного типа в другой тип (здесь старонняя библиотека)
             .build();

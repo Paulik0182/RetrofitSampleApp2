@@ -7,7 +7,7 @@ public class GitUserEntity {
     private int id;
     private String login;
 
-    @SerializedName("node_id")
+    @SerializedName("node_id")// анатация к полю. Название полей не должны быть с подчеркиванием
     private String nodeId;
 
     public GitUserEntity(int id, String name, String description) {
