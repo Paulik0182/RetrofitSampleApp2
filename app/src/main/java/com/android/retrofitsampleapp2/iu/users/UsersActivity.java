@@ -10,38 +10,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.retrofitsampleapp2.App;
 import com.android.retrofitsampleapp2.R;
 import com.android.retrofitsampleapp2.data.GitHubApi;
 import com.android.retrofitsampleapp2.domain.GitUserEntity;
 import com.android.retrofitsampleapp2.iu.projects.ProjectsActivity;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UsersActivity extends AppCompatActivity {
 
-    private final OkHttpClient client = new OkHttpClient
-            .Builder()// каждый раз вызова метода билдора будет возвращать его самого
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .build();
+    //    private final GitHubApi gitHubApi = ((App) getApplication()).getGitHubApi();//это не правильная запись
+    private GitHubApi gitHubApi;//достаем из класса App из метода GitHubApi -> gitHubApi
 
-    //создаем Retrofit
-    private final Retrofit retrofit = new Retrofit.Builder()
-            //это начало адреса которая будет подставлятся для открытия списка пользователя и их репозитория
-            .client(client)//сдесь можно передать например настройки
-            .baseUrl("https://api.github.com/")
-            .addConverterFactory(GsonConverterFactory.create())// это приобразователь объектов из одного типа в другой тип (здесь старонняя библиотека)
-            .build();
-
-    // создали gitHubApi для обращения к нему (create - творить). GitHubApi.class - тип данных который нужно создать
-    private GitHubApi gitHubApi = retrofit.create(GitHubApi.class);
 
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
@@ -53,6 +38,9 @@ public class UsersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_users);
 
         initView();
+
+        gitHubApi = ((App) getApplication()).getGitHubApi();//достаем из класса App из метода GitHubApi -> gitHubApi.
+        // при этом арр берется в общем классе BaseActivity, ткак-как от этого класса мы наследуемся
 
         showProgress(true);
 

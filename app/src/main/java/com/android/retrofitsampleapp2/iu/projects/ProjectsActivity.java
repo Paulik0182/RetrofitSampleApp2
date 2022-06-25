@@ -12,34 +12,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.retrofitsampleapp2.App;
 import com.android.retrofitsampleapp2.R;
 import com.android.retrofitsampleapp2.data.GitHubApi;
 import com.android.retrofitsampleapp2.domain.GitProjectEntity;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ProjectsActivity extends AppCompatActivity {
 
     private static final String LOGIN_EXTRA_KEY = "LOGIN_EXTRA_KEY";
 
-    //увеличили время по таймауту при загрузке из сети (без этого, по умолчанию 10сек.)
-    private final OkHttpClient client = new OkHttpClient.Builder()
-            .connectTimeout(15, TimeUnit.SECONDS)
-            .build();
-    private final Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("https://api.github.com/")
-            .client(client)// увеличение времени по таймауту
-            .addConverterFactory(GsonConverterFactory.create())// это приобразователь объектов из одного типа в другой тип (здесь старонняя библиотека)
-            .build();
-    private final GitHubApi gitHubApi = retrofit.create(GitHubApi.class); //создаем gitHubApi. Автоматически обратится к интерфейсу
+    //    private final GitHubApi gitHubApi = ((App) getApplication()).getGitHubApi();//это не правильная запись
+    private GitHubApi gitHubApi;//достаем из класса App из метода GitHubApi -> gitHubApi
 
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
@@ -58,6 +47,9 @@ public class ProjectsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_projects);
 
         initView();
+
+        gitHubApi = ((App) getApplication()).getGitHubApi();//достаем из класса App из метода GitHubApi -> gitHubApi.
+        // при этом арр берется в общем классе BaseActivity, ткак-как от этого класса мы наследуемся
 
         final String login = getIntent().getStringExtra(LOGIN_EXTRA_KEY);//получаем логин
 
