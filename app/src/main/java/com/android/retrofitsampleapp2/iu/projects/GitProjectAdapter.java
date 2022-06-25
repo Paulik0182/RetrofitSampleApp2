@@ -1,4 +1,4 @@
-package com.android.retrofitsampleapp2.iu;
+package com.android.retrofitsampleapp2.iu.projects;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;

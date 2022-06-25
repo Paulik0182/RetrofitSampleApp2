@@ -1,4 +1,4 @@
-package com.android.retrofitsampleapp2.iu;
+package com.android.retrofitsampleapp2.iu.users;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.retrofitsampleapp2.R;
 import com.android.retrofitsampleapp2.data.GitHubApi;
 import com.android.retrofitsampleapp2.domain.GitUserEntity;
+import com.android.retrofitsampleapp2.iu.projects.ProjectsActivity;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
