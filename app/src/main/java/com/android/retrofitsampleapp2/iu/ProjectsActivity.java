@@ -61,6 +61,8 @@ public class ProjectsActivity extends AppCompatActivity {
 
         final String login = getIntent().getStringExtra(LOGIN_EXTRA_KEY);//получаем логин
 
+        setTitle(login);//подставили имя в заголовок
+
         loadProjects(login);
     }
 
