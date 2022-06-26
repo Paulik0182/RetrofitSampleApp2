@@ -2,11 +2,15 @@ package com.android.retrofitsampleapp2.iu.users;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,24 +26,27 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UsersActivity extends AppCompatActivity {
+public class UsersFragment extends Fragment {
 
     //    private final GitHubApi gitHubApi = ((App) getApplication()).getGitHubApi();//это не правильная запись
     private GitHubApi gitHubApi;//достаем из класса App из метода GitHubApi -> gitHubApi
-
 
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
     private GitUsersAdapter adapter = new GitUsersAdapter();// создали адаптер Users
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_users);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_users, container, false);
+    }
 
-        initView();
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initView(view);
 
-        gitHubApi = ((App) getApplication()).getGitHubApi();//достаем из класса App из метода GitHubApi -> gitHubApi.
+        gitHubApi = ((App) getActivity().getApplication()).getGitHubApi();//достаем из класса App из метода GitHubApi -> gitHubApi.
         // при этом арр берется в общем классе BaseActivity, ткак-как от этого класса мы наследуемся
 
         showProgress(true);
@@ -49,7 +56,6 @@ public class UsersActivity extends AppCompatActivity {
         // и приобразовать его в OnItemClickListener (это синтаксический сахр)
 
         loadUsers();
-
     }
 
     private void loadUsers() {
@@ -68,30 +74,30 @@ public class UsersActivity extends AppCompatActivity {
 
                     //test
                     assert user != null;
-                    Toast.makeText(UsersActivity.this, "Size" + user.size(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Size" + user.size(), Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(UsersActivity.this, "Error code" + response.code(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Error code" + response.code(), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<GitUserEntity>> call, Throwable t) {
                 showProgress(false);
-                Toast.makeText(UsersActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
     private void openUserScreen(GitUserEntity user) {
-        Intent intent = ProjectsActivity.getLaunchIntent(this, user.getLogin());
+        Intent intent = ProjectsActivity.getLaunchIntent(getContext(), user.getLogin());
         startActivity(intent);
-        Toast.makeText(this, "Нажали " + user.getLogin(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Нажали " + user.getLogin(), Toast.LENGTH_SHORT).show();
     }
 
-    private void initView() {
-        progressBar = findViewById(R.id.progress_bar);
-        recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    private void initView(View view) {
+        progressBar = view.findViewById(R.id.progress_bar);
+        recyclerView = view.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
     }
 
