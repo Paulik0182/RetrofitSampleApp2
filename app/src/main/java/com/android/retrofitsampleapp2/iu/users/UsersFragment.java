@@ -1,6 +1,5 @@
 package com.android.retrofitsampleapp2.iu.users;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,7 @@ import com.android.retrofitsampleapp2.App;
 import com.android.retrofitsampleapp2.R;
 import com.android.retrofitsampleapp2.data.GitHubApi;
 import com.android.retrofitsampleapp2.domain.GitUserEntity;
-import com.android.retrofitsampleapp2.iu.projects.ProjectsActivity;
+import com.android.retrofitsampleapp2.iu.projects.ProjectsFragment;
 
 import java.util.List;
 
@@ -27,6 +26,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UsersFragment extends Fragment {
+
+    private static final String TAG_PROJECT_CONTAINER_LAYOUT_KEY = "TAG_PROJECT_CONTAINER_LAYOUT_KEY";
 
     //    private final GitHubApi gitHubApi = ((App) getApplication()).getGitHubApi();//это не правильная запись
     private GitHubApi gitHubApi;//достаем из класса App из метода GitHubApi -> gitHubApi
@@ -89,8 +90,14 @@ public class UsersFragment extends Fragment {
     }
 
     private void openUserScreen(GitUserEntity user) {
-        Intent intent = ProjectsActivity.getLaunchIntent(getContext(), user.getLogin());
-        startActivity(intent);
+        Fragment projectFragment = ProjectsFragment.getLaunchIntent(user.getLogin());
+        getActivity()
+                .getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.container_layout, projectFragment, TAG_PROJECT_CONTAINER_LAYOUT_KEY)
+                .addToBackStack(null)
+                .commit();
+
         Toast.makeText(getContext(), "Нажали " + user.getLogin(), Toast.LENGTH_SHORT).show();
     }
 
