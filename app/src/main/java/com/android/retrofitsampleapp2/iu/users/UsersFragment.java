@@ -17,7 +17,6 @@ import com.android.retrofitsampleapp2.App;
 import com.android.retrofitsampleapp2.R;
 import com.android.retrofitsampleapp2.data.GitHubApi;
 import com.android.retrofitsampleapp2.domain.GitUserEntity;
-import com.android.retrofitsampleapp2.iu.projects.ProjectsFragment;
 
 import java.util.List;
 
@@ -90,13 +89,14 @@ public class UsersFragment extends Fragment {
     }
 
     private void openUserScreen(GitUserEntity user) {
-        Fragment projectFragment = ProjectsFragment.getLaunchIntent(user.getLogin());
-        getActivity()
-                .getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.container_layout, projectFragment, TAG_PROJECT_CONTAINER_LAYOUT_KEY)
-                .addToBackStack(null)
-                .commit();
+        getController().openProjectFragment(user);
+//        Fragment projectFragment = ProjectsFragment.newInstance(user.getLogin());
+//        getActivity()
+//                .getSupportFragmentManager()
+//                .beginTransaction()
+//                .add(R.id.container_layout, projectFragment, TAG_PROJECT_CONTAINER_LAYOUT_KEY)
+//                .addToBackStack(null)
+//                .commit();
 
         Toast.makeText(getContext(), "Нажали " + user.getLogin(), Toast.LENGTH_SHORT).show();
     }
@@ -116,5 +116,13 @@ public class UsersFragment extends Fragment {
             recyclerView.setVisibility(View.VISIBLE);//показываем view со списком
             progressBar.setVisibility(View.GONE);//скрываем прогресс загрузки
         }
+    }
+
+    private Controller getController() {
+        return (Controller) getActivity();
+    }
+
+    public interface Controller {
+        void openProjectFragment(GitUserEntity user);
     }
 }

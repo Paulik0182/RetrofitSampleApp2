@@ -34,12 +34,10 @@ public class ProjectsFragment extends Fragment {
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
 
-    public static ProjectsFragment getLaunchIntent(String login) {
-
+    public static ProjectsFragment newInstance(String login) {
+        ProjectsFragment fragment = new ProjectsFragment();
         Bundle args = new Bundle();
         args.putString(GIT_PROJECT_ENTITY_KEY, login);
-
-        ProjectsFragment fragment = new ProjectsFragment();
         fragment.setArguments(args);
 
         return fragment;
