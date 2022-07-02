@@ -9,11 +9,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.retrofitsampleapp2.R;
 import com.android.retrofitsampleapp2.domain.GitProjectEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GitProjectAdapter extends RecyclerView.Adapter<GitProjectViewHolder> {
 
-    private List<GitProjectEntity> data;//Завели приватный список (закэшировали)
+    private List<GitProjectEntity> data = new ArrayList<>();//Завели приватный список (закэшировали)
 
     public void setData(List<GitProjectEntity> project) {
         data = project;

@@ -26,7 +26,6 @@ import retrofit2.Response;
 
 public class ProjectsFragment extends Fragment {
 
-    private static final String LOGIN_EXTRA_KEY = "LOGIN_EXTRA_KEY";
     private static final String GIT_PROJECT_ENTITY_KEY = "GIT_PROJECT_ENTITY_KEY";
     private final GitProjectAdapter adapter = new GitProjectAdapter();
     //    private final GitHubApi gitHubApi = ((App) getApplication()).getGitHubApi();//это не правильная запись
@@ -58,7 +57,7 @@ public class ProjectsFragment extends Fragment {
         gitHubApi = ((App) getActivity().getApplication()).getGitHubApi();//достаем из класса App из метода GitHubApi -> gitHubApi.
         // при этом арр берется в общем классе BaseActivity, ткак-как от этого класса мы наследуемся
 
-        final String login = getActivity().getIntent().getStringExtra(LOGIN_EXTRA_KEY);//получаем логин
+        final String login = getArguments().getString(GIT_PROJECT_ENTITY_KEY);//получаем логин
 
         getActivity().setTitle(login);//подставили имя в заголовок
 
