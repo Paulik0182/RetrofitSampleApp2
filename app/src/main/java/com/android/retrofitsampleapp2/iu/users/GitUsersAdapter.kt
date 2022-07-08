@@ -8,7 +8,7 @@ import com.android.retrofitsampleapp2.domain.GitUserEntity
 
 class GitUsersAdapter(
     private var data: List<GitUserEntity>,
-    private var listener: (OnItemClickListener) -> Unit
+    private var listener: (GitUserEntity) -> Unit
 ) : RecyclerView.Adapter<GitUsersViewHolder>() {
 
     fun setData(users: List<GitUserEntity>) {

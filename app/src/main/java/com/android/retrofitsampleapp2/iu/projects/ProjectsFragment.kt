@@ -18,7 +18,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ProjectsFragment : Fragment() {
-    private val adapter = GitProjectAdapter()
+    private val adapter = GitProjectAdapter(data = ArrayList())
 
     private val gitHubApi: GitHubApi by lazy { (requireActivity().application as App).gitHubApi }
     private lateinit var progressBar: ProgressBar

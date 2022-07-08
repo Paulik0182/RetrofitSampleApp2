@@ -22,7 +22,7 @@ class UsersFragment : Fragment() {
     private val gitHubApi: GitHubApi by lazy { (requireActivity().application as App).gitHubApi }
     private lateinit var progressBar: ProgressBar
     private lateinit var recyclerView: RecyclerView
-    private val adapter = GitUsersAdapter() // создали адаптер Users
+    private val adapter by lazy { GitUsersAdapter() } // создали адаптер Users
 
     override fun onCreateView(
         inflater: LayoutInflater,
