@@ -1,128 +1,103 @@
-package com.android.retrofitsampleapp2.iu.users;
+package com.android.retrofitsampleapp2.iu.users
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.android.retrofitsampleapp2.App
+import com.android.retrofitsampleapp2.R
+import com.android.retrofitsampleapp2.data.GitHubApi
+import com.android.retrofitsampleapp2.domain.GitUserEntity
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+class UsersFragment : Fragment() {
 
-import com.android.retrofitsampleapp2.App;
-import com.android.retrofitsampleapp2.R;
-import com.android.retrofitsampleapp2.data.GitHubApi;
-import com.android.retrofitsampleapp2.domain.GitUserEntity;
+    private val gitHubApi: GitHubApi by lazy { (requireActivity().application as App).gitHubApi }
+    private lateinit var progressBar: ProgressBar
+    private lateinit var recyclerView: RecyclerView
+    private val adapter = GitUsersAdapter() // создали адаптер Users
 
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class UsersFragment extends Fragment {
-
-    private static final String TAG_PROJECT_CONTAINER_LAYOUT_KEY = "TAG_PROJECT_CONTAINER_LAYOUT_KEY";
-
-    //    private final GitHubApi gitHubApi = ((App) getApplication()).getGitHubApi();//это не правильная запись
-    private GitHubApi gitHubApi;//достаем из класса App из метода GitHubApi -> gitHubApi
-
-    private ProgressBar progressBar;
-    private RecyclerView recyclerView;
-    private GitUsersAdapter adapter = new GitUsersAdapter();// создали адаптер Users
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_users, container, false);
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_users, container, false)
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        initView(view);
-
-        gitHubApi = ((App) getActivity().getApplication()).getGitHubApi();//достаем из класса App из метода GitHubApi -> gitHubApi.
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView(view)
         // при этом арр берется в общем классе BaseActivity, ткак-как от этого класса мы наследуемся
-
-        showProgress(true);
-
-        adapter.setOnItemClickListener(this::openUserScreen);// ::это ссылка на один метод,
+        showProgress(true)
+        adapter.setOnItemClickListener { user: GitUserEntity -> openUserScreen(user) } // ::это ссылка на один метод,
         // а :: означает, что этот метод использовать как лямду чтобы передать его в адаптер
         // и приобразовать его в OnItemClickListener (это синтаксический сахр)
-
-        loadUsers();
+        loadUsers()
     }
 
-    private void loadUsers() {
+    private fun loadUsers() {
         //вызываем проект (репозиторий) конкретного пользователя. Вызов идет ассинхронно в том же потоке
         // (enqueue - ставить в очередь в () передаем Callback, execute - выполнять).
         // Callback состоит из двух методов: onResponse - получение ответа; onFailure - получение ошибки (нет сети ошибка сервера, DNS и т.д.).
-        gitHubApi.getUsers().enqueue(new Callback<List<GitUserEntity>>() {
-
-            @Override
-            public void onResponse(Call<List<GitUserEntity>> call, Response<List<GitUserEntity>> response) {
-                showProgress(false);
-//                if (response.code()==200){  //проверка кода, код 200 означает успех
-                if (response.isSuccessful()) { //isSuccessful - это уже проверка кодов от 200 до 300
-                    List<GitUserEntity> user = response.body(); // body - это тело запроса, это будет список репозиториев которые мы ищем. Здесь мы получаем список проектов
-                    adapter.setData(user);
-
-                    //test
-                    assert user != null;
-                    Toast.makeText(getContext(), "Size" + user.size(), Toast.LENGTH_LONG).show();
+        gitHubApi.getUsers().enqueue(object : Callback<List<GitUserEntity>> {
+            override fun onResponse(
+                call: Call<List<GitUserEntity>>,
+                response: Response<List<GitUserEntity>>
+            ) {
+                showProgress(false)
+                //                if (response.code()==200){  //проверка кода, код 200 означает успех
+                if (response.isSuccessful) { //isSuccessful - это уже проверка кодов от 200 до 300
+                    val user =
+                        response.body() // body - это тело запроса, это будет список репозиториев которые мы ищем. Здесь мы получаем список проектов
+                    adapter.setData(user)
+                    assert(user != null)
+                    Toast.makeText(context, "Size" + user!!.size, Toast.LENGTH_LONG).show()
                 } else {
-                    Toast.makeText(getContext(), "Error code" + response.code(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Error code" + response.code(), Toast.LENGTH_LONG)
+                        .show()
                 }
             }
 
-            @Override
-            public void onFailure(Call<List<GitUserEntity>> call, Throwable t) {
-                showProgress(false);
-                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            override fun onFailure(call: Call<List<GitUserEntity>>, t: Throwable) {
+                showProgress(false)
+                Toast.makeText(context, t.message, Toast.LENGTH_LONG).show()
             }
-        });
+        })
     }
 
-    private void openUserScreen(GitUserEntity user) {
-        getController().openProjectFragment(user);
-//        Fragment projectFragment = ProjectsFragment.newInstance(user.getLogin());
-//        getActivity()
-//                .getSupportFragmentManager()
-//                .beginTransaction()
-//                .add(R.id.container_layout, projectFragment, TAG_PROJECT_CONTAINER_LAYOUT_KEY)
-//                .addToBackStack(null)
-//                .commit();
-
-        Toast.makeText(getContext(), "Нажали " + user.getLogin(), Toast.LENGTH_SHORT).show();
+    private fun openUserScreen(user: GitUserEntity) {
+        controller.openProjectFragment(user)
+        Toast.makeText(context, "Нажали " + user.login, Toast.LENGTH_SHORT).show()
     }
 
-    private void initView(View view) {
-        progressBar = view.findViewById(R.id.progress_bar);
-        recyclerView = view.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter);
+    private fun initView(view: View) {
+        progressBar = view.findViewById(R.id.progress_bar)
+        recyclerView = view.findViewById(R.id.recycler_view)
+        recyclerView.setLayoutManager(LinearLayoutManager(context))
+        recyclerView.setAdapter(adapter)
     }
 
-    private void showProgress(boolean shouldShow) {
+    private fun showProgress(shouldShow: Boolean) {
         if (shouldShow) {
-            recyclerView.setVisibility(View.GONE);//скрываем view со списком
-            progressBar.setVisibility(View.VISIBLE);//показываем прогресс загрузки
+            recyclerView.visibility = View.GONE //скрываем view со списком
+            progressBar.visibility = View.VISIBLE //показываем прогресс загрузки
         } else {
-            recyclerView.setVisibility(View.VISIBLE);//показываем view со списком
-            progressBar.setVisibility(View.GONE);//скрываем прогресс загрузки
+            recyclerView.visibility = View.VISIBLE //показываем view со списком
+            progressBar.visibility = View.GONE //скрываем прогресс загрузки
         }
     }
 
-    private Controller getController() {
-        return (Controller) getActivity();
-    }
+    private val controller: Controller by lazy { activity as Controller }
 
-    public interface Controller {
-        void openProjectFragment(GitUserEntity user);
+    interface Controller {
+        fun openProjectFragment(user: GitUserEntity)
     }
 }
