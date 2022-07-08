@@ -55,7 +55,7 @@ class ProjectsFragment : Fragment() {
                 if (response.isSuccessful) { //Если успех, достаем GitProjectEntity, делаем setData. isSuccessful - это уже проверка кодов от 200 до 300
                     val users =
                         response.body() // body - это тело запроса, это будет список репозиториев которые мы ищем. Здесь мы получаем список проектов
-                    adapter.setData(users)
+                    adapter.setData(users!!)
                     //test
                     Toast.makeText(context, "Size" + users!!.size, Toast.LENGTH_LONG).show()
                 } else {
