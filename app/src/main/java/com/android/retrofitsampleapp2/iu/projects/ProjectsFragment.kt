@@ -18,7 +18,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ProjectsFragment : Fragment() {
-    private val adapter = GitProjectAdapter(data = ArrayList())
+    private lateinit var adapter: GitProjectAdapter
 
     private val gitHubApi: GitHubApi by lazy { (requireActivity().application as App).gitHubApi }
     private lateinit var progressBar: ProgressBar
@@ -75,8 +75,8 @@ class ProjectsFragment : Fragment() {
     private fun initView(view: View) {
         progressBar = view.findViewById(R.id.progress_bar)
         recyclerView = view.findViewById(R.id.recycler_view)
-        recyclerView.setLayoutManager(LinearLayoutManager(context))
-        recyclerView.setAdapter(adapter)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = adapter
     }
 
     private fun showProgress(shouldShow: Boolean) {

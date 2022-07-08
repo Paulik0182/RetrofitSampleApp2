@@ -1,5 +1,6 @@
 package com.android.retrofitsampleapp2.iu.projects
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,6 +11,7 @@ class GitProjectAdapter(
     private var data: List<GitProjectEntity>
 ) : RecyclerView.Adapter<GitProjectViewHolder>() {
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(project: List<GitProjectEntity>) {
         data = project
         notifyDataSetChanged() //для того чтобы у всех обнавлялось

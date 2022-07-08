@@ -1,5 +1,6 @@
 package com.android.retrofitsampleapp2.iu.users
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +12,7 @@ class GitUsersAdapter(
     private var listener: (GitUserEntity) -> Unit
 ) : RecyclerView.Adapter<GitUsersViewHolder>() {
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(users: List<GitUserEntity>) {
         data = users
         notifyDataSetChanged()
@@ -25,7 +27,7 @@ class GitUsersAdapter(
         return GitUsersViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_git_user, parent, false),
-            (listener as OnItemClickListener?)!!
+            (listener as OnItemClickListener)
         ) // listener - передаем далее во viewHolder
     }
 
