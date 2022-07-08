@@ -57,7 +57,7 @@ class ProjectsFragment : Fragment() {
                         response.body() // body - это тело запроса, это будет список репозиториев которые мы ищем. Здесь мы получаем список проектов
                     adapter.setData(users!!)
                     //test
-                    Toast.makeText(context, "Size" + users!!.size, Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Size" + users.size, Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(context, "Error code" + response.code(), Toast.LENGTH_LONG)
                         .show()

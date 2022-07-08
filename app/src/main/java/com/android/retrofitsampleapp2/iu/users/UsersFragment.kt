@@ -57,9 +57,8 @@ class UsersFragment : Fragment() {
                 if (response.isSuccessful) { //isSuccessful - это уже проверка кодов от 200 до 300
                     val user =
                         response.body() // body - это тело запроса, это будет список репозиториев которые мы ищем. Здесь мы получаем список проектов
-                    adapter.setData(user)
-                    assert(user != null)
-                    Toast.makeText(context, "Size" + user!!.size, Toast.LENGTH_LONG).show()
+                    adapter.setData(user!!)
+                    Toast.makeText(context, "Size" + user.size, Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(context, "Error code" + response.code(), Toast.LENGTH_LONG)
                         .show()

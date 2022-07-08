@@ -17,14 +17,15 @@ class GitUsersAdapter(
     }
 
     //сохнанили слушатель. после интерфейса идем сюда и передаем его дальше во onCreateViewHolder
-    fun setOnItemClickListener(listener: OnItemClickListener) {
+    fun setOnItemClickListener(listener: (GitUserEntity) -> Unit) {
         this.listener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GitUsersViewHolder {
         return GitUsersViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_git_user, parent, false), listener as OnItemClickListener?
+                .inflate(R.layout.item_git_user, parent, false),
+            (listener as OnItemClickListener?)!!
         ) // listener - передаем далее во viewHolder
     }
 
