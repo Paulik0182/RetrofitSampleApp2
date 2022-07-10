@@ -76,6 +76,7 @@ class ProjectsFragment : Fragment() {
         progressBar = view.findViewById(R.id.progress_bar)
         recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context)
+        adapter = GitProjectAdapter(emptyList())
         recyclerView.adapter = adapter
     }
 

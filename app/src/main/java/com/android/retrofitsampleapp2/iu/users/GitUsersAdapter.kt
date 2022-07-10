@@ -27,7 +27,7 @@ class GitUsersAdapter(
         return GitUsersViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_git_user, parent, false),
-            (listener as OnItemClickListener)
+            listener
         ) // listener - передаем далее во viewHolder
     }
 

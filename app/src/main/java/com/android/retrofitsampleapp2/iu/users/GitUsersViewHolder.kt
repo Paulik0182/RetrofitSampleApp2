@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.retrofitsampleapp2.R
 import com.android.retrofitsampleapp2.domain.GitUserEntity
 
-class GitUsersViewHolder(itemView: View, listener: GitUsersAdapter.OnItemClickListener) :
+class GitUsersViewHolder(itemView: View, listener: (GitUserEntity) -> Unit) :
     RecyclerView.ViewHolder(itemView) {
     private val titleUserTextView = itemView.findViewById<TextView>(R.id.title_user_text_view)
     private val subtitleUserTextView = itemView.findViewById<TextView>(R.id.subtitle_user_text_view)
@@ -23,7 +23,7 @@ class GitUsersViewHolder(itemView: View, listener: GitUsersAdapter.OnItemClickLi
         // при нажатии на элемент происходит вызов listener и передается в него user который положили в bind
         itemView.setOnClickListener { _ ->
             user.let {
-                listener.onItemClick(
+                listener.invoke(
                     it
                 )
             }

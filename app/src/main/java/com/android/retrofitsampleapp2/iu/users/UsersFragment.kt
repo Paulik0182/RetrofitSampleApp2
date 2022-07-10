@@ -23,6 +23,9 @@ class UsersFragment : Fragment() {
     private lateinit var progressBar: ProgressBar
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: GitUsersAdapter // создали адаптер Users
+    private val listener = { gitUserEntity: GitUserEntity ->
+        openUserScreen(gitUserEntity)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +40,7 @@ class UsersFragment : Fragment() {
         initView(view)
         // при этом арр берется в общем классе BaseActivity, ткак-как от этого класса мы наследуемся
         showProgress(true)
-        adapter.setOnItemClickListener { user: GitUserEntity -> openUserScreen(user) } // ::это ссылка на один метод,
+        adapter.setOnItemClickListener(listener) // ::это ссылка на один метод,
         // а :: означает, что этот метод использовать как лямду чтобы передать его в адаптер
         // и приобразовать его в OnItemClickListener (это синтаксический сахр)
         loadUsers()
@@ -81,7 +84,7 @@ class UsersFragment : Fragment() {
         progressBar = view.findViewById(R.id.progress_bar)
         recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        adapter = GitUsersAdapter(data, listener)
+        adapter = GitUsersAdapter(emptyList(), listener)
         recyclerView.adapter = adapter
     }
 
